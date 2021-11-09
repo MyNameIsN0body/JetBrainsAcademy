@@ -1,0 +1,99 @@
+empty_field = "_________"
+figures = [x for x in empty_field]
+index = {11: 0, 12: 1, 13: 2, 21: 3, 22: 4, 23: 5, 31: 6, 32: 7, 33: 8}
+last_move = 'O'
+
+
+def print_field(field):
+    print(f"""---------
+| {field[0]} {field[1]} {field[2]} |
+| {field[3]} {field[4]} {field[5]} |
+| {field[6]} {field[7]} {field[8]} |
+---------""")
+
+
+def input_coordinates():
+    return ''.join(input("Enter the coordinates: ").split())
+
+
+def check_column(field, item):
+    win = 0
+    for i in range(3):
+        for x in range(i, 9, 3):
+            if field[x] == item:
+                win += 1
+        if win == 3:
+            return True
+        else:
+            win = 0
+    return False
+
+
+def check_line(field, item):
+    win = 0
+    for _ in range(3):
+        for x in range(3):
+            if field[x] == item:
+                win += 1
+        if win == 3:
+            return True
+        else:
+            win = 0
+    return False
+
+
+def check_diagonal_first(field, item):
+    win = 0
+    for x in range(0, 9, 4):
+        if field[x] == item:
+            win += 1
+    return win == 3
+
+
+def check_diagonal_second(field, item):
+    win = 0
+    for x in range(2, 7, 2):
+        if field[x] == item:
+            win += 1
+    return win == 3
+
+
+def check_win(field, item):
+    return check_column(field, item) or check_line(field, item) or check_diagonal_first(field,
+                                                                                        item) or check_diagonal_second(
+        field, item)
+
+
+def check_draw(figures):
+    empty = 0
+    for x in figures:
+        if x == "_":
+            empty += 1
+    return empty == 0
+
+
+def move(figure):
+    coordinates = ''.join(input("Enter the coordinates: ").split())
+    if coordinates.isdigit() is False:
+        print("You should enter numbers!")
+        coordinates = input_coordinates()
+    elif int(coordinates[0]) > 3 or int(coordinates[1]) > 3:
+        print("Coordinates should be from 1 to 3!")
+        coordinates = input_coordinates()
+    elif figures[index.get(int(coordinates))] != '_':
+        print("This cell is occupied! Choose another one!")
+        coordinates = input_coordinates()
+    figures[index.get(int(coordinates))] = figure
+
+
+print_field(figures)
+
+while any([cell == '_' for cell in figures]):
+    last_move = 'O' if last_move == 'X' else 'X'
+    move(last_move)
+    print_field(figures)
+    if check_win(figures, last_move):
+        print(f"{last_move} wins")
+        break
+    elif check_draw(figures):
+        print("Draw")
