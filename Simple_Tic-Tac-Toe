@@ -59,9 +59,10 @@ def check_diagonal_second(field, item):
 
 
 def check_win(field, item):
-    return check_column(field, item) or check_line(field, item) or check_diagonal_first(field,
-                                                                                        item) or check_diagonal_second(
-        field, item)
+    return check_column(field, item)\
+           or check_line(field, item)\
+           or check_diagonal_first(field, item)\
+           or check_diagonal_second(field, item)
 
 
 def check_draw(figures):
